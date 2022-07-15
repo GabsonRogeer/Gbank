@@ -1,0 +1,1 @@
+INSERT INTO tb_Cliente(nome,data_de_nascimento,cpf) VALUES ('Gabson Roger','2022-06-16','600.600.600-12');
