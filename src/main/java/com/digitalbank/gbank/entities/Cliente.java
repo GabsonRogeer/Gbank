@@ -1,5 +1,7 @@
 package com.digitalbank.gbank.entities;
 
+import org.hibernate.mapping.ToOne;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,10 +16,20 @@ public class Cliente implements Serializable {
     private String nome;
     private Date dataDeNascimento;
     private String cpf;
-    @OneToOne
+    @JoinColumn(unique=true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ContaBancaria contaBancaria;
 
     public Cliente() {
+    }
+
+    public ContaBancaria getContaBancaria() {
+        return contaBancaria;
+    }
+
+    public void setContaBancaria(ContaBancaria contaBancaria) {
+        this.contaBancaria = contaBancaria;
+
     }
 
     public String getName() {
