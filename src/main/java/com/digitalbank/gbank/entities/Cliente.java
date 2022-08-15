@@ -1,11 +1,16 @@
 package com.digitalbank.gbank.entities;
 
-import org.hibernate.mapping.ToOne;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_Cliente")
 public class Cliente implements Serializable {
@@ -14,50 +19,20 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private Date dataDeNascimento;
+
+    @JsonFormat(timezone = "dd/MM/aaaa")
+    private Instant dataDeNascimento;
     private String cpf;
-    @JoinColumn(unique=true)
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToOne
     private ContaBancaria contaBancaria;
 
-    public Cliente() {
-    }
-
-    public ContaBancaria getContaBancaria() {
-        return contaBancaria;
-    }
-
-    public void setContaBancaria(ContaBancaria contaBancaria) {
-        this.contaBancaria = contaBancaria;
-
-    }
-
-    public String getName() {
-        return nome;
-    }
-
-    public void setName(String name) {
-        this.nome = name;
-    }
-
-    public Date getDataDeNascimento() {
-        return dataDeNascimento;
-    }
-
-    public void setDataDeNascimento(Date dataDeNascimento) {
+    public Cliente(Long id, String nome, Instant dataDeNascimento, String cpf) {
+        this.id = id;
+        this.nome = nome;
         this.dataDeNascimento = dataDeNascimento;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-
-
-
 }
 
 

@@ -1,31 +1,38 @@
 package com.digitalbank.gbank.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
+@Table(name = "tb_contasbancarias")
 public class ContaBancaria implements Serializable {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numConta;
-    private LocalDate dataDeCriacao;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    private Instant dataDeCriacao;
     private Double saldo;
-    private String chavePix;
 
-    public Long getId_conta() {
-        return id;
-    }
+    @OneToOne
+    @JoinColumn(referencedColumnName = "id_cliente")
+    private Cliente cliente;
 
-    public void setId_conta(Long id_conta) {
-        this.id = id_conta;
-    }
 
     public ContaBancaria() {
+    }
+
+    public ContaBancaria(Long id, String numConta, Instant dataDeCriacao, Double saldo) {
+        this.id = id;
+        this.numConta = numConta;
+        this.dataDeCriacao = dataDeCriacao;
+        this.saldo = saldo;
     }
 
     public Long getId() {
@@ -44,11 +51,11 @@ public class ContaBancaria implements Serializable {
         this.numConta = numConta;
     }
 
-    public LocalDate getDataDeCriacao() {
+    public Instant getDataDeCriacao() {
         return dataDeCriacao;
     }
 
-    public void setDataDeCriacao(LocalDate dataDeCriacao) {
+    public void setDataDeCriacao(Instant dataDeCriacao) {
         this.dataDeCriacao = dataDeCriacao;
     }
 
@@ -60,11 +67,9 @@ public class ContaBancaria implements Serializable {
         this.saldo = saldo;
     }
 
-    public String getChavePix() {
-        return chavePix;
+    @JsonIgnore
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setChavePix(String chavePix) {
-        this.chavePix = chavePix;
-    }
 }
